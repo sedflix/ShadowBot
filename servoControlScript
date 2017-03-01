@@ -1,0 +1,50 @@
+#include <SoftwareSerial.h>// import the serial library
+
+#include <Servo.h>
+SoftwareSerial Genotronex(12, 13); // RX, TX
+
+Servo s1;
+Servo s2;
+Servo s3;
+
+void setup() {
+
+  Genotronex.begin(9600);
+  Serial.begin(9600);
+  s1.attach(3);
+  s2.attach(4);
+  s3.attach(5);
+  s1.write(0);
+  delay(1000);
+  s2.write(0);
+  delay(1000);
+  s3.write(0);
+  delay(1000);
+  Genotronex.println("Bluetooth Is ON. Press f for forward, blah blah... ");
+
+}
+int y = 0;
+int y1 = 10;
+int y2 = 20;
+void loop()
+{
+ 
+    if (Genotronex.available()) 
+    {
+    
+      char x = char(Genotronex.read());
+      if(x=='f')
+      {
+        Serial.println(y);
+        y=(y+50)%180;
+        y1 = (y1+100)%180;
+        y2 = (y2+80)%180;
+        s1.write(y);
+        s2.write(y1);
+        s3.write(y2);
+        delay(100);
+      }
+
+    }
+  
+}
