@@ -3,46 +3,50 @@
 #include <Servo.h>
 SoftwareSerial Genotronex(12, 13); // RX, TX
 
-Servo s1;
-Servo s2;
-Servo s3;
+Servo s[2]; //the number here decide the number of servo attached to our arduino
+int s1[]={3,4}; //list of correspoding pin numbers s1[0] is the pin nummber of s[0]
+int degintial[] = {0,0};//intial position of each motor
+
+
+String str = "";
+int counter = 0;
+int deg = 0;
+int numberOfDigit = 0;
 
 void setup() {
-
-  Genotronex.begin(9600);
+  Genotronex.begin(9600);//sets baund rate for Bluetooth Serial Communication 
   Serial.begin(9600);
-  s1.attach(3);
-  s2.attach(4);
-  s3.attach(5);
-  s1.write(0);
-  delay(1000);
-  s2.write(0);
-  delay(1000);
-  s3.write(0);
-  delay(1000);
+  for(int i =0;i<sizeof(s)/sizeof(*s);i++)
+  {
+    s[i].attach(s1[i]);
+    s[i].write(degintial[i]);//sets every motor to its intial position as specified in deginital
+    delay(100);
+  }
+  delay(100);
   Genotronex.println("Bluetooth Is ON. Press f for forward, blah blah... ");
-
 }
-int y = 0;
-int y1 = 10;
-int y2 = 20;
 void loop()
-{
- 
+{ 
     if (Genotronex.available()) 
-    {
-    
+    {  
       char x = char(Genotronex.read());
-      if(x=='f')
+      if(x == ':')
       {
-        Serial.println(y);
-        y=(y+50)%180;
-        y1 = (y1+100)%180;
-        y2 = (y2+80)%180;
-        s1.write(y);
-        s2.write(y1);
-        s3.write(y2);
-        delay(100);
+        int k  = (atoi(str.c_str()));
+        s[counter].write(k);
+        counter = (counter+1)  % (sizeof(s)/sizeof(*s));
+        //deg = 0;
+        str="";
+        //numberOfDigit =0;
+        Serial.print(k);
+        Serial.print(":");
+        Serial.println(counter);
+        
+      }
+      else
+      {
+        str =  str+x;
+        Serial.println(str);
       }
 
     }
