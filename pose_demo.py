@@ -18,7 +18,6 @@ import logging as _logging
 import glob as _glob
 import numpy as _np
 import scipy as _scipy
-import click as _click
 import caffe as _caffe
 
 from estimate_pose import estimate_pose
