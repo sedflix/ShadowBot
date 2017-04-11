@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 """
 Pose predictions in Python.
-
 Caffe must be available on the Pythonpath for this to work. The methods can
 be imported and used directly, or the command line interface can be used. In
 the latter case, adjust the log-level to your needs. The maximum image size
 for one prediction can be adjusted with the variable _MAX_SIZE so that it
 still fits in GPU memory, all larger images are split in sufficiently small
 parts.
-
 Authors: Christoph Lassner, based on the MATLAB implementation by Eldar
   Insafutdinov.
 """
@@ -18,7 +16,10 @@ import logging as _logging
 import glob as _glob
 import numpy as _np
 import scipy as _scipy
+#import click as _click
 import caffe as _caffe
+import time
+#import serial
 
 from estimate_pose import estimate_pose
 
@@ -27,16 +28,17 @@ _LOGGER = _logging.getLogger(__name__)
 
 def column(matrix, i):
     return [row[i] for row in matrix]
- 
+
+
 def _npcircle(image, cx, cy, radius, color, transparency=0.0):
     """Draw a circle on an image using only numpy methods."""
     radius = int(radius)
     cx = int(cx)
     cy = int(cy)
     y, x = _np.ogrid[-radius: radius, -radius: radius]
-    index = x**2 + y**2 <= radius**2
-    image[cy-radius:cy+radius, cx-radius:cx+radius][index] = (
-        image[cy-radius:cy+radius, cx-radius:cx+radius][index].astype('float32') * transparency +
+    index = x ** 2 + y ** 2 <= radius ** 2
+    image[cy - radius:cy + radius, cx - radius:cx + radius][index] = (
+        image[cy - radius:cy + radius, cx - radius:cx + radius][index].astype('float32') * transparency +
         _np.array(color).astype('float32') * (1.0 - transparency)).astype('uint8')
 
 
@@ -75,29 +77,31 @@ def _npcircle(image, cx, cy, radius, color, transparency=0.0):
 #                help='GPU device id.',
 #                default=0)
 
-def getAngle(a,b,c):
+def getAngle(a, b, c):
     a = _np.array(a)
     b = _np.array(b)
     c = _np.array(c)
-    ba = b[0:2] - a[0:2] # normalization of vectors
-    bc = b[0:2] - c[0:2] # normalization of vectors
-    cosine_angle = _np.dot(ba, bc) / (_np.linalg.norm(ba) *_np.linalg.norm(bc))
+    ba = b[0:2] - a[0:2]  # normalization of vectors
+    bc = b[0:2] - c[0:2]  # normalization of vectors
+    cosine_angle = _np.dot(ba, bc) / (_np.linalg.norm(ba) * _np.linalg.norm(bc))
     angle = _np.arccos(cosine_angle)
     return _np.degrees(angle)
+
 
 def predict_pose_from(image_name,
                       out_name=None,
                       scales='1.',
                       visualize=True,
                       folder_image_suffix='.jpg',
-                      use_cpu=True,
+                      use_cpu=False,
                       gpu=0):
     """
     Load an image file, predict the pose and write it out.
-    
+
     `IMAGE_NAME` may be an image or a directory, for which all images with
     `folder_image_suffix` will be processed.
     """
+    #ser = serial.Serial('COM4', 9600, timeout=0)
     model_def = '../../models/deepercut/ResNet-152.prototxt'
     model_bin = '../../models/deepercut/ResNet-152.caffemodel'
     scales = [float(val) for val in scales.split(',')]
@@ -131,7 +135,7 @@ def predict_pose_from(image_name,
             _LOGGER.warn("The image is grayscale! This may deteriorate performance!")
             image = _np.dstack((image, image, image))
         else:
-            image = image[:, :, ::-1]    
+            image = image[:, :, ::-1]
         pose = estimate_pose(image, model_def, model_bin, scales)
         print(pose)
         """
@@ -150,15 +154,20 @@ def predict_pose_from(image_name,
         12 Neck
         13 Head top
         """
+        
         target = open(out_name + '.txt', 'w')
-        target.write(str(getAngle(column(pose,9),column(pose,10), column(pose,11))))
+        a = int(getAngle(column(pose, 9), column(pose, 10), column(pose, 11)))
+        b = int(getAngle(column(pose, 12), column(pose, 9), column(pose, 10)))
+        target.write(str(a) + " : " + str(b))
         target.close()
+        #
+        # ser.write((str(a) + ":" + str(b) + ":").encode())
         _np.savez_compressed(out_name, pose=pose)
         if visualize:
             visim = image[:, :, ::-1].copy()
-            colors = [[255, 0, 0],[0, 255, 0],[0, 0, 255],[0,245,255],[255,131,250],[255,255,0],
-                      [255, 0, 0],[0, 255, 0],[0, 0, 255],[0,245,255],[255,131,250],[255,255,0],
-                      [0,0,0],[255,255,255]]
+            colors = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [0, 245, 255], [255, 131, 250], [255, 255, 0],
+                      [255, 0, 0], [0, 255, 0], [0, 0, 255], [0, 245, 255], [255, 131, 250], [255, 255, 0],
+                      [0, 0, 0], [255, 255, 255]]
             for p_idx in range(14):
                 _npcircle(visim,
                           pose[0, p_idx],
@@ -171,7 +180,6 @@ def predict_pose_from(image_name,
 
 
 if __name__ == '__main__':
-    
     # pylint: disable=no-value-for-parameter
     predict_pose_from('./',
                       out_name='./out1',
