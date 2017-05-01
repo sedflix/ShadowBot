@@ -73,6 +73,26 @@ void setup() {
 }
 void loop()
 {
+  int d1 = map(deginitial[0], deg_min[0], deg_max[0], 0, Range[0]); //Left 1
+  int d2 = map(deginitial[1], deg_min[1], deg_max[1], 0, Range[1]); //Right 1
+  int d3 = map(deginitial[2], deg_min[2], deg_max[2], 0, Range[2]); //Left 2
+  int d4 = map(deginitial[3], deg_min[3], deg_max[3], 0, Range[3]); //Right 2
+  if(d1>=140 && d1 <=180)
+  {
+    deg_max[4] = map(2 * (180 - d3), 0, 90, deg_min[4], 180);    
+  }
+  else
+  {
+    deg_max[4] = 180;
+  }
+  if(d2>=140 && d2 <= 180)
+  {
+    deg_max[5] = map(2 * (180 - d4), 0, 90, deg_min[5], 180);
+  }
+  else
+  {
+    deg_max[5] = 180;
+  }
   if (Serial.available())
   {
     char x = char(Serial.read());
