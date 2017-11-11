@@ -1,0 +1,2 @@
+The three versions of the Bluetooth codes which have been improvised and developed to go to the final code
+The 2 versions of Servo motor testing code, the first code is not very well conditioned and the second code ensures proper functioning of the servos. The chasis has a particular design and hence the servos were supposed to have restricted motion. Also the latter versions has mapped all the positions of the servos from 0 to 90 degrees or 180 degrees.

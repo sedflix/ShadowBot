@@ -1,0 +1,31 @@
+﻿<Window x:Class="ShadowBot_Kinect.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="450" Width="1000" Loaded="WindowLoaded" Closing="WindowClosing">
+    <Grid>
+        <Label x:Name="LS1" Content="Left Shoulder 1" HorizontalAlignment="Left" Margin="23,92,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="LS2" Content="Left Shoulder 2" HorizontalAlignment="Left" Margin="23,123,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="ls1" Content="" HorizontalAlignment="Left" Margin="229,89,0,0" VerticalAlignment="Top" Width="143" BorderThickness="1" Background="#FFD4D4D4"/>
+        <Label x:Name="ls2" Content="" HorizontalAlignment="Left" Margin="229,120,0,0" VerticalAlignment="Top" Width="143" BorderThickness="1" Background="#FFD4D4D4"/>
+        <Label x:Name="LE" Content="Left Elbow" HorizontalAlignment="Left" Margin="23,154,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="le" Content="" HorizontalAlignment="Left" Margin="229,151,0,0" VerticalAlignment="Top" Width="143" BorderThickness="1" Background="#FFD4D4D4"/>
+        <Label x:Name="RS1" Content="Right Shoulder 1" HorizontalAlignment="Left" Margin="23,186,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="RS2" Content="Right Shoulder 2" HorizontalAlignment="Left" Margin="23,217,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="rs1" Content="" HorizontalAlignment="Left" Margin="229,183,0,0" VerticalAlignment="Top" Width="143" BorderThickness="1" Background="#FFD4D4D4"/>
+        <Label x:Name="rs2" Content="" HorizontalAlignment="Left" Margin="229,214,0,0" VerticalAlignment="Top" Width="143" BorderThickness="1" Background="#FFD4D4D4"/>
+        <Label x:Name="RE" Content="Right Elbow" HorizontalAlignment="Left" Margin="23,248,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="re" Content="" HorizontalAlignment="Left" Margin="229,245,0,0" VerticalAlignment="Top" Width="143" BorderThickness="1" Background="#FFD4D4D4"/>
+        <Label x:Name="LH" Content="Left Hip" HorizontalAlignment="Left" Margin="23,280,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="RH" Content="Right Hip" HorizontalAlignment="Left" Margin="23,311,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lh" Content="" HorizontalAlignment="Left" Margin="229,277,0,0" VerticalAlignment="Top" Width="143" BorderThickness="1" Background="#FFD4D4D4"/>
+        <Label x:Name="rh" Content="" HorizontalAlignment="Left" Margin="229,308,0,0" VerticalAlignment="Top" Width="143" BorderThickness="1" Background="#FFD4D4D4"/>
+        <Label x:Name="LK" Content="Left Knee" HorizontalAlignment="Left" Margin="23,342,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lk" Content="" HorizontalAlignment="Left" Margin="229,339,0,0" VerticalAlignment="Top" Width="143" BorderThickness="1" Background="#FFD4D4D4"/>
+        <Label x:Name="RK" Content="Right Knee" HorizontalAlignment="Left" Margin="23,374,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="rk" Content="" HorizontalAlignment="Left" Margin="229,371,0,0" VerticalAlignment="Top" Width="143" BorderThickness="1" Background="#FFD4D4D4"/>
+        <Label x:Name="title" Content="IEDatron" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" Width="165" FontSize="40" Height="72"/>
+        <Viewbox HorizontalAlignment="Right">
+            <Image Name="Image" Width="600" Height="450"/>
+        </Viewbox>
+    </Grid>
+</Window>
